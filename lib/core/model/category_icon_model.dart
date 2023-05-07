@@ -45,6 +45,7 @@ class Product {
   final String rating;
   final String numOfLikes;
   final String price;
+  final bool likeStatus;
 
   Product(
       {required this.image,
@@ -52,5 +53,6 @@ class Product {
       required this.productName,
       required this.rating,
       required this.numOfLikes,
+      required this.likeStatus,
       required this.price});
 }

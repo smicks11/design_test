@@ -13,6 +13,9 @@ class HomeViewModel extends BaseViewModel {
     collapsedTitle = '';
   }
 
+  ScrollController scrollController = ScrollController();
+  bool showAppBarImage = true;
+
   late String collapsedTitle;
   TextEditingController searchController = TextEditingController();
 
@@ -129,6 +132,7 @@ class HomeViewModel extends BaseViewModel {
 
   final List<Product> productList = [
     Product(
+        likeStatus: false,
         image: ImageAssets.product_one,
         category: "Shirt",
         productName:
@@ -137,6 +141,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "12.00"),
     Product(
+        likeStatus: true,
         image: ImageAssets.product_two,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -144,6 +149,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "18.00"),
     Product(
+        likeStatus: true,
         image: ImageAssets.product_one,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -151,6 +157,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "12.00"),
     Product(
+        likeStatus: false,
         image: ImageAssets.product_two,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -158,6 +165,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "18.00"),
     Product(
+        likeStatus: true,
         image: ImageAssets.product_one,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -165,6 +173,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "12.00"),
     Product(
+        likeStatus: true,
         image: ImageAssets.product_two,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -172,6 +181,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "18.00"),
     Product(
+        likeStatus: false,
         image: ImageAssets.product_one,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -179,6 +189,7 @@ class HomeViewModel extends BaseViewModel {
         numOfLikes: "2345",
         price: "12.00"),
     Product(
+        likeStatus: true,
         image: ImageAssets.product_two,
         category: "Shirt",
         productName: "Essential Men's Short-Sleeve Crowneck T-Shirt",
@@ -205,6 +216,11 @@ class HomeViewModel extends BaseViewModel {
   getSelectedImage(String selectedImage, int index) {
     _selectedImage = selectedImage;
     _selectedIndex = index;
+    notifyListeners();
+  }
+
+  handleScroll() {
+    showAppBarImage = scrollController.offset < kToolbarHeight;
     notifyListeners();
   }
 

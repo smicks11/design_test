@@ -49,211 +49,228 @@ class _DetailScreemState extends State<DetailScreem>
 
   Widget _buildScreen(BuildContext context, HomeViewModel model) => Scaffold(
         appBar: _buildAppBar(context, model),
-        body: SizedBox(
-          height: deviceHeight(context) * 1.0,
-          width: deviceWidth(context) * 1.0,
-          child: SingleChildScrollView(
-            child: Column(
+        body: TweenAnimationBuilder(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 1000),
+            builder: (BuildContext context, double value, Widget? child) {
+              return Opacity(
+                opacity: value,
+                child: Transform.translate(
+                  offset: Offset(0, (1 - value) * 100),
+                  child: SizedBox(
+                    height: deviceHeight(context) * 1.0,
+                    width: deviceWidth(context) * 1.0,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HSpace(20.h),
+                          imageBanner(context, model),
+                          HSpace(20.h),
+                          _productOwner(),
+                          HSpace(12.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: Styles.medium(
+                              "Essentials Men's Short-Sleeve Crewnect T-Shirt",
+                              color: AppColors.black,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                          HSpace(16.h),
+                          _rateAndReviewSection(),
+                          HSpace(20.h),
+                          _tabSection(context),
+                          HSpace(4.h),
+                          SizedBox(
+                            height: 130.h,
+                            child: TabBarView(
+                                controller: tabController,
+                                children: [
+                                  _aboutItemBlock(model),
+                                  _aboutItemBlock(model),
+                                ]),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: const Divider(
+                              color: AppColors.grayscalePlaceholderColor,
+                            ),
+                          ),
+                          HSpace(30.h),
+                          description(),
+                          HSpace(25.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: Styles.regular(
+                                'Chat us if there is anything you need to ask about the product :)',
+                                color: AppColors.grayscalePlaceholderColor,
+                                fontSize: 14.sp),
+                          ),
+                          HSpace(30.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: const Divider(
+                              color: AppColors.grayscalePlaceholderColor,
+                            ),
+                          ),
+                          HSpace(30.h),
+                          ShippingSection(),
+                          HSpace(30.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: const Divider(
+                              color: AppColors.grayscalePlaceholderColor,
+                            ),
+                          ),
+                          HSpace(30.h),
+                          _sellerInfo(),
+                          HSpace(30.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: const Divider(
+                              color: AppColors.grayscalePlaceholderColor,
+                            ),
+                          ),
+                          HSpace(30.h),
+                          _reviewSection(),
+                          HSpace(30.h),
+                          _reviewSecondSection(model),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: const Divider(
+                              color: AppColors.grayscalePlaceholderColor,
+                            ),
+                          ),
+                          HSpace(30.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: Column(
+                              children: [
+                                _reviewHeaderSection(model),
+                                HSpace(30.h),
+                                Column(
+                                  children: List.generate(
+                                      4,
+                                      (index) => Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20.0),
+                                            child: commentSection(),
+                                          )),
+                                )
+                              ],
+                            ),
+                          ),
+                          HSpace(30.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Styles.medium('Recommendation',
+                                    color: AppColors.black, fontSize: 17.sp),
+                                Styles.medium('See more',
+                                    color: AppColors.primaryColor,
+                                    fontSize: 15.sp)
+                              ],
+                            ),
+                          ),
+                          HSpace(30.h),
+                          _productBlock(model, context)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+        bottomNavigationBar: _bottomNav(context),
+      );
+
+
+
+
+
+
+  Padding _productBlock(HomeViewModel model, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.w),
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 8,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 15,
+            childAspectRatio: 0.65,
+          ),
+          itemBuilder: (_, index) {
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HSpace(20.h),
-                imageBanner(context, model),
-                HSpace(20.h),
-                _productOwner(),
-                HSpace(12.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: Styles.medium(
-                    "Essentials Men's Short-Sleeve Crewnect T-Shirt",
-                    color: AppColors.black,
-                    fontSize: 20.sp,
-                  ),
-                ),
-                HSpace(16.h),
-                _rateAndReviewSection(),
-                HSpace(20.h),
-                _tabSection(context),
-                HSpace(4.h),
-                SizedBox(
+                Image(
+                  image: AssetImage(model.productList[index].image),
                   height: 130.h,
-                  child: TabBarView(controller: tabController, children: [
-                    _aboutItemBlock(model),
-                    _aboutItemBlock(model),
-                  ]),
+                  width: deviceWidth(context) * 1.0,
+                  fit: BoxFit.cover,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: const Divider(
-                    color: AppColors.grayscalePlaceholderColor,
-                  ),
-                ),
-                HSpace(30.h),
-                description(),
-                HSpace(25.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: Styles.regular(
-                      'Chat us if there is anything you need to ask about the product :)',
-                      color: AppColors.grayscalePlaceholderColor,
-                      fontSize: 14.sp),
-                ),
-                HSpace(30.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: const Divider(
-                    color: AppColors.grayscalePlaceholderColor,
-                  ),
-                ),
-                HSpace(30.h),
-                ShippingSection(),
-                HSpace(30.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: const Divider(
-                    color: AppColors.grayscalePlaceholderColor,
-                  ),
-                ),
-                HSpace(30.h),
-                _sellerInfo(),
-                HSpace(30.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: const Divider(
-                    color: AppColors.grayscalePlaceholderColor,
-                  ),
-                ),
-                HSpace(30.h),
-                _reviewSection(),
-                HSpace(30.h),
-                _reviewSecondSection(model),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: const Divider(
-                    color: AppColors.grayscalePlaceholderColor,
-                  ),
-                ),
-                HSpace(30.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  // decoration: const BoxDecoration(color: AppColors.white),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _reviewHeaderSection(model),
-                      HSpace(30.h),
-                      Column(
-                        children: List.generate(
-                            4,
-                            (index) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 20.0),
-                                  child: commentSection(),
-                                )),
+                      HSpace(14.h),
+                      Styles.medium(model.productList[index].category,
+                          color: AppColors.grayscalePlaceholderColor),
+                      HSpace(10.h),
+                      Styles.medium(model.productList[index].productName,
+                          color: AppColors.black,
+                          fontSize: 14.sp,
+                          overflow: TextOverflow.ellipsis,
+                          lines: 2),
+                      HSpace(18.h),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 12.0.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    size: 15.sp,
+                                    color: Colors.orange,
+                                  ),
+                                  WSpace(4.w),
+                                  Styles.regular(
+                                      '${model.productList[index].rating} |',
+                                      fontSize: 11.sp,
+                                      color:
+                                          AppColors.grayscalePlaceholderColor),
+                                  WSpace(4.w),
+                                  Styles.regular(
+                                      model.productList[index].numOfLikes,
+                                      fontSize: 11.sp,
+                                      color:
+                                          AppColors.grayscalePlaceholderColor),
+                                ],
+                              ),
+                            ),
+                            Styles.bold('\$${model.productList[index].price}',
+                                color: Colors.green, fontSize: 17.sp)
+                          ],
+                        ),
                       )
                     ],
                   ),
-                ),
-                HSpace(30.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Styles.medium('Recommendation',
-                          color: AppColors.black, fontSize: 17.sp),
-                      Styles.medium('See more',
-                          color: AppColors.primaryColor, fontSize: 15.sp)
-                    ],
-                  ),
-                ),
-                HSpace(30.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 8,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 15,
-                        childAspectRatio: 0.65,
-                      ),
-                      itemBuilder: (_, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image(
-                              image: AssetImage(model.productList[index].image),
-                              height: 130.h,
-                              width: deviceWidth(context) * 1.0,
-                              fit: BoxFit.cover,
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.w),
-                              // decoration: const BoxDecoration(color: AppColors.white),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  HSpace(14.h),
-                                  Styles.medium(
-                                      model.productList[index].category,
-                                      color:
-                                          AppColors.grayscalePlaceholderColor),
-                                  HSpace(10.h),
-                                  Styles.medium(
-                                      model.productList[index].productName,
-                                      color: AppColors.black,
-                                      fontSize: 14.sp,
-                                      overflow: TextOverflow.ellipsis,
-                                      lines: 2),
-                                  HSpace(18.h),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 12.0.h),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.star,
-                                                size: 15.sp,
-                                                color: Colors.orange,
-                                              ),
-                                              WSpace(4.w),
-                                              Styles.regular(
-                                                  '${model.productList[index].rating} |',
-                                                  fontSize: 11.sp,
-                                                  color: AppColors
-                                                      .grayscalePlaceholderColor),
-                                              WSpace(4.w),
-                                              Styles.regular(
-                                                  model.productList[index]
-                                                      .numOfLikes,
-                                                  fontSize: 11.sp,
-                                                  color: AppColors
-                                                      .grayscalePlaceholderColor),
-                                            ],
-                                          ),
-                                        ),
-                                        Styles.bold(
-                                            '\$${model.productList[index].price}',
-                                            color: Colors.green,
-                                            fontSize: 17.sp)
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        );
-                      }),
                 )
               ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: _bottomNav(context),
-      );
+            );
+          }),
+    );
+  }
 
   Padding ShippingSection() {
     return Padding(
@@ -696,7 +713,7 @@ class _DetailScreemState extends State<DetailScreem>
 
   Container _bottomNav(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 12.w),
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 15.w),
       height: deviceHeight(context) * 0.15,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

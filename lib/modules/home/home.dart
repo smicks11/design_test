@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
         width: deviceWidth(context) * 1.0,
         child: CustomScrollView(
           slivers: [
-            header(context, model),
+            header(model, context),
             moreActions(context, model),
             productHeader(),
             ProductList(model: model),

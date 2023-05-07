@@ -39,7 +39,7 @@ class CustomTextFormField extends StatelessWidget {
       this.label = '',
       this.icon,
       this.labelColor,
-      this.fillingColor = AppColors.grayscaleInputColor,
+      this.fillingColor =Colors.transparent,
       this.hintText = '',
       this.obscureText,
       this.controller,

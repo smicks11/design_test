@@ -22,7 +22,7 @@ class ActionItem extends StatelessWidget {
           children: [
             const Icon(
               Icons.wallet_giftcard_outlined,
-              color: AppColors.black,
+              color: Colors.black54,
               size: 22,
             ),
             Padding(
